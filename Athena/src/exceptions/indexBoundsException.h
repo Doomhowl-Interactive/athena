@@ -11,10 +11,10 @@ namespace athena
 {
 	namespace exceptions 
 	{
-		class AT_API indexOutOfBoundsException : public std::exception
+		class AT_API indexOutOfBoundsException : public std::runtime_error
 		{
 		public:
-			indexOutOfBoundsException(const char* msg) : std::exception("[athena] index was out of bounds!")
+			indexOutOfBoundsException(const char* msg) : std::runtime_error("[athena] index was out of bounds!")
 			{
 				std::cerr << "[Athena] indexOutOfBoundsException: " << msg << std::endl;
 			}

@@ -10,10 +10,10 @@ namespace athena
 {
 	namespace exceptions 
 	{
-		class compressionException : public std::exception
+		class compressionException : public std::runtime_error
 		{
 		public:
-			compressionException(const char* error) : std::exception("[athena] a compression error occured")
+			compressionException(const char* error) : std::runtime_error("[athena] a compression error occured")
 			{
 				std::cerr << "[Athena] compression error: " << error << std::endl;
 			};

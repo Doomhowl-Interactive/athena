@@ -8,10 +8,10 @@ namespace athena
 {
 	namespace exceptions
 	{
-		class badStreamException : public std::exception
+		class badStreamException : public std::runtime_error
 		{
 		public:
-			badStreamException(const char* error) : std::exception("[athena] a badStream error occured")
+			badStreamException(const char* error) : std::runtime_error("[athena] a badStream error occured")
 			{
 				std::cerr << "[Athena] badStream error: " << error << std::endl;
 			};
