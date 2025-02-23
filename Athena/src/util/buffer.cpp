@@ -19,7 +19,7 @@ namespace athena
 
 		const char* data = (const char*) malloc(size);
 		
-		memcpy_s((void*)data, size, m_data.data() + m_pointerPosition, size);
+		memcpy((void*)data, /*size,*/ m_data.data() + m_pointerPosition, size);
 		m_pointerPosition = std::max((size_t)0, m_pointerPosition + size);
 		return data;
 	}

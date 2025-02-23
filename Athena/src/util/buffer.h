@@ -2,6 +2,9 @@
 #ifndef BUFFER
 #define BUFFER
 #include <vector>
+#include <malloc.h>
+#include <cstring>
+#include <cstdint>
 #include <type_traits>
 
 namespace athena
@@ -111,11 +114,11 @@ namespace athena
 
             if (structSize > storedStructSize)
             {
-                memcpy_s(reinterpret_cast<char*>(p_struct), storedStructSize, p_src, storedStructSize);
+                memcpy(reinterpret_cast<char*>(p_struct), /*storedStructSize,*/ p_src, storedStructSize);
                 memset(reinterpret_cast<char*>(p_struct) + storedStructSize, 0, structSize - storedStructSize);
             }
             else
-                memcpy_s(reinterpret_cast<char*>(p_struct), structSize, p_src, structSize);
+                memcpy(reinterpret_cast<char*>(p_struct), /*structSize,*/ p_src, structSize);
 
             
             delete[] p_src;
