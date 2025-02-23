@@ -26,10 +26,10 @@ struct DoomAssetHeader
 int main()
 {
     std::filesystem::current_path(std::filesystem::path(__FILE__).parent_path().parent_path());
+    auto path = std::filesystem::path("./assets.doom");
 
     try
     {
-        auto path = std::filesystem::path("./assets.doom");
         auto streamWriter = athena::fileStreamWriter(path);
         DoomPackageHeader pkgHeader{1};
         streamWriter.writeObject(pkgHeader);
@@ -48,17 +48,48 @@ int main()
     }
     catch (const std::exception& ex)
     {
-        std::cerr << ex.what() << std::endl;
+        std::cerr << "Failed to save asset bundle: " << ex.what() << '\n';
     }
 
+    Texture wolfTexture;
+
     InitWindow(800, 600, "raylib athena asset serialization");
+
+    try {
+        auto streamReader = athena::fileStreamReader(path);
+
+        // TODO: Leaks memory
+        auto pkgHeader = streamReader.readObject<DoomPackageHeader>();
+
+        std::cout << "Magic: " << pkgHeader.magic << '\n';
+        std::cout << "Version: " << pkgHeader.version << '\n';
+        std::cout << "Asset count: " << pkgHeader.assetCount << '\n';
+        
+        for (int i = 0; i < pkgHeader.assetCount; i++)
+        {
+            streamReader.nextStreamSection();
+
+            auto asset = streamReader.readObject<DoomAssetHeader>();
+            auto rawData = reinterpret_cast<const unsigned char*>(streamReader.readData(asset.size));
+
+            const char* ext = GetFileExtension(asset.fileName);
+            wolfTexture = LoadTextureFromImage(LoadImageFromMemory(ext, rawData, asset.size));
+        }
+    }
+    catch (const std::exception& ex)
+    {
+        std::cerr << "Failed to load asset bundle: " << ex.what() << '\n';
+    }
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
 
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        DrawTexture(wolfTexture, 0, 0, WHITE);
+
+        DrawText("it did the thing!", 190, 200, 20, LIGHTGRAY);
 
         EndDrawing();
     }
