@@ -26,7 +26,7 @@ namespace athena
 		virtual size_t getStreamSectionCount() const override;
 		virtual const char* readData(size_t size) override;
 		template<typename T>
-		T& readObject() 
+		T readObject() 
 		{
 			if (m_sections[m_sectionIndex]) return m_sections[m_sectionIndex]->readObject<T>();
 			m_sections[m_sectionIndex] = &m_compressedSections[m_sectionIndex].decompress();
