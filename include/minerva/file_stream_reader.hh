@@ -8,12 +8,12 @@
 
 namespace minerva
 {
-class fileStreamReader : public streamReader
+class FileStreamReader : public IStreamReader
 {
   public:
-    fileStreamReader(std::filesystem::path &path);
-    fileStreamReader(const fileStreamReader &) = delete;
-    ~fileStreamReader();
+    FileStreamReader(std::filesystem::path &path);
+    FileStreamReader(const FileStreamReader &) = delete;
+    ~FileStreamReader();
     virtual bool isStreamGood() const override;
     virtual void setSectionPointerPosition(size_t index) override;
     virtual void setStreamPosition(size_t index) override;
@@ -42,8 +42,8 @@ class fileStreamReader : public streamReader
 
     size_t m_sectionIndex = 0;
 
-    std::vector<buffer *> m_sections;
-    std::vector<compressedBuffer> m_compressedSections;
+    std::vector<Buffer *> m_sections;
+    std::vector<CompressedBuffer> m_compressedSections;
 };
 
 } // namespace minerva

@@ -8,13 +8,13 @@
 
 namespace minerva
 {
-class fileStreamWriter : public streamWriter
+class FileStreamWriter : public IStreamWriter
 {
   public:
-    fileStreamWriter(std::filesystem::path &path);
-    fileStreamWriter(const fileStreamWriter &) = delete;
+    FileStreamWriter(std::filesystem::path &path);
+    FileStreamWriter(const FileStreamWriter &) = delete;
 
-    virtual ~fileStreamWriter();
+    virtual ~FileStreamWriter();
     virtual bool isStreamGood() const override;
     virtual void setSectionPointerPosition(size_t index) override;
     virtual void setStreamPosition(size_t index) override;
@@ -33,13 +33,13 @@ class fileStreamWriter : public streamWriter
         sections[sectionIndex].writeArray(vector);
     };
 
-    virtual compressedBuffer flush();
+    virtual CompressedBuffer flush();
 
   private:
     size_t sectionIndex = 0;
 
     std::filesystem::path m_path;
     std::ofstream m_stream;
-    std::vector<buffer> sections;
+    std::vector<Buffer> sections;
 };
 } // namespace minerva

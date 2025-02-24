@@ -4,14 +4,14 @@
 namespace minerva
 {
 /**
- * @brief This is the interface for all streamWriters
- * sections is the collection of uncompressed minerva::buffer objects to write to!
- * when the streamWriter is flushed all of them get transformed into minerva::compressedBuffer objects.
+ * @brief This is the interface for all StreamWriters
+ * sections is the collection of uncompressed minerva::Buffer objects to write to!
+ * when the IStreamWriter is flushed all of them get transformed into minerva::CompressedBuffer objects.
  */
-class streamWriter
+class IStreamWriter
 {
   public:
-    virtual ~streamWriter() = default;
+    virtual ~IStreamWriter() = default;
     virtual bool isStreamGood() const = 0;
     virtual void setSectionPointerPosition(size_t index) = 0;
     virtual void setStreamPosition(size_t index) = 0;
@@ -27,7 +27,7 @@ class streamWriter
     {
         return isStreamGood();
     }
-    
-    virtual compressedBuffer flush() = 0;
+
+    virtual CompressedBuffer flush() = 0;
 };
 } // namespace minerva

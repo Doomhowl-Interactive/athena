@@ -3,27 +3,27 @@
 
 namespace minerva
 {
-class compressedBuffer : protected buffer
+class CompressedBuffer : protected Buffer
 {
   public:
-    compressedBuffer(buffer buffer);
-    compressedBuffer(const char *data, size_t size);
-    compressedBuffer() = default;
+    CompressedBuffer(Buffer Buffer);
+    CompressedBuffer(const char *data, size_t size);
+    CompressedBuffer() = default;
     size_t size() const;
     const char *data();
 
     size_t contentSize();
-    buffer &decompress();
-    static void serialize(buffer *p_dstBuffer, const compressedBuffer &srcBuffer)
+    Buffer &decompress();
+    static void serialize(Buffer *p_dstBuffer, const CompressedBuffer &srcBuffer)
     {
         size_t srcSize = srcBuffer.size();
 
         p_dstBuffer->writeData((const char *)&srcSize, sizeof(size_t));
         p_dstBuffer->writeData((const char *)srcBuffer.m_data.data(), srcBuffer.size());
     }
-    static compressedBuffer &deserialize(minerva::buffer *p_srcBuffer)
+    static CompressedBuffer &deserialize(minerva::Buffer *p_srcBuffer)
     {
-        compressedBuffer *p_dstBuffer = new compressedBuffer();
+        CompressedBuffer *p_dstBuffer = new CompressedBuffer();
 
         size_t size = *(size_t *)p_srcBuffer->readData(sizeof(size_t));
 

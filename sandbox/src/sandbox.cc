@@ -32,21 +32,21 @@ int main()
 
     try
     {
-        auto streamWriter = minerva::fileStreamWriter(path);
+        auto IStreamWriter = minerva::FileStreamWriter(path);
         DoomPackageHeader pkgHeader{1};
-        streamWriter.writeObject(pkgHeader);
-        streamWriter.nextStreamSection();
+        IStreamWriter.writeObject(pkgHeader);
+        IStreamWriter.nextStreamSection();
 
         {
             int fileSize;
             unsigned char *data = LoadFileData("ComfyUI_00372_.png", &fileSize);
 
             auto header = DoomAssetHeader{"ComfyUI_00372_.png", static_cast<uint64_t>(fileSize)};
-            streamWriter.writeObject(header);
-            streamWriter.writeData((const char *)data, fileSize);
+            IStreamWriter.writeObject(header);
+            IStreamWriter.writeData((const char *)data, fileSize);
         }
 
-        streamWriter.flush();
+        IStreamWriter.flush();
     }
     catch (const std::exception &ex)
     {
@@ -59,10 +59,10 @@ int main()
 
     try
     {
-        auto streamReader = minerva::fileStreamReader(path);
+        auto IStreamReader = minerva::FileStreamReader(path);
 
         // TODO: Leaks memory
-        auto pkgHeader = streamReader.readObject<DoomPackageHeader>();
+        auto pkgHeader = IStreamReader.readObject<DoomPackageHeader>();
 
         std::cout << "Magic: " << pkgHeader.magic << '\n';
         std::cout << "Version: " << pkgHeader.version << '\n';
@@ -70,10 +70,10 @@ int main()
 
         for (int i = 0; i < pkgHeader.assetCount; i++)
         {
-            streamReader.nextStreamSection();
+            IStreamReader.nextStreamSection();
 
-            auto asset = streamReader.readObject<DoomAssetHeader>();
-            auto rawData = reinterpret_cast<const unsigned char *>(streamReader.readData(asset.size));
+            auto asset = IStreamReader.readObject<DoomAssetHeader>();
+            auto rawData = reinterpret_cast<const unsigned char *>(IStreamReader.readData(asset.size));
 
             const char *ext = GetFileExtension(asset.fileName);
             wolfTexture = LoadTextureFromImage(LoadImageFromMemory(ext, rawData, asset.size));

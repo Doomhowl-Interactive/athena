@@ -1,6 +1,5 @@
 #pragma once
-#ifndef BUFFER
-#define BUFFER
+
 #include <cstdint>
 #include <cstring>
 #include <malloc.h>
@@ -9,14 +8,14 @@
 
 namespace minerva
 {
-class buffer;
+class Buffer;
 // Trait to check if T has a member function serialize with the given signature
 template <typename T> struct has_serialize_method
 {
   private:
     // Helper template to check if the serialize method exists and has the correct signature
     template <typename U>
-    static auto test(int) -> decltype(std::declval<U>().serialize(std::declval<minerva::buffer *>(),
+    static auto test(int) -> decltype(std::declval<U>().serialize(std::declval<minerva::Buffer *>(),
                                                                   std::declval<const U &>()),
                                       void(), std::true_type{});
 
@@ -32,7 +31,7 @@ template <typename T> struct has_deserialize_method
   private:
     // Helper template to check if the serialize method exists and has the correct signature
     template <typename U>
-    static auto test(int) -> decltype(std::declval<U>().deserialize(std::declval<minerva::buffer *>()),
+    static auto test(int) -> decltype(std::declval<U>().deserialize(std::declval<minerva::Buffer *>()),
                                       std::declval<U &>(), std::true_type{});
 
     template <typename> static std::false_type test(...);
@@ -42,7 +41,7 @@ template <typename T> struct has_deserialize_method
     static constexpr bool value = type::value;
 };
 
-class buffer
+class Buffer
 {
   public:
 #pragma region write
@@ -84,16 +83,16 @@ class buffer
     }
 #pragma endregion
 #pragma region serialize
-    static void serialize(buffer *p_dstBuffer, const buffer &srcBuffer)
+    static void serialize(Buffer *p_dstBuffer, const Buffer &srcBuffer)
     {
         size_t srcSize = srcBuffer.size();
 
         p_dstBuffer->writeData((const char *)&srcSize, sizeof(size_t));
         p_dstBuffer->writeData((const char *)srcBuffer.m_data.data(), srcBuffer.size());
     }
-    static buffer &deserialize(buffer *p_srcBuffer)
+    static Buffer &deserialize(Buffer *p_srcBuffer)
     {
-        buffer *p_dstBuffer = new buffer();
+        Buffer *p_dstBuffer = new Buffer();
 
         size_t size = *(size_t *)p_srcBuffer->readData(sizeof(size_t));
 
@@ -161,4 +160,3 @@ class buffer
 };
 
 } // namespace minerva
-#endif // !BUFFER
