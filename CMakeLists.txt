@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-project(Athena)
+project(athena)
 
 option(ATHENA_BUILD_EXAMPLE "Build the example" OFF)
 
@@ -19,39 +19,39 @@ else()
 endif()
 
 add_library(${PROJECT_NAME} ${BUILD_TYPE}
-    Athena/src/exceptions/badStreamException.h
-    Athena/src/exceptions/compressionException.h
-    Athena/src/exceptions/indexBoundsException.h
+    athena/src/exceptions/badStreamException.h
+    athena/src/exceptions/compressionException.h
+    athena/src/exceptions/indexBoundsException.h
 
-    Athena/src/streams/compression/compressedBuffer.cpp
-    Athena/src/streams/compression/compressedBuffer.h
+    athena/src/streams/compression/compressedBuffer.cpp
+    athena/src/streams/compression/compressedBuffer.h
 
-    Athena/src/streams/readers/fileStreamReader.h
-    Athena/src/streams/readers/fileStreamReader.cpp
-    Athena/src/streams/readers/streamReader.h
+    athena/src/streams/readers/fileStreamReader.h
+    athena/src/streams/readers/fileStreamReader.cpp
+    athena/src/streams/readers/streamReader.h
 
-    Athena/src/streams/writers/fileStreamWriter.h
-    Athena/src/streams/writers/fileStreamWriter.cpp
-    Athena/src/streams/writers/streamWriter.h
+    athena/src/streams/writers/fileStreamWriter.h
+    athena/src/streams/writers/fileStreamWriter.cpp
+    athena/src/streams/writers/streamWriter.h
 
-    Athena/src/util/buffer.cpp
-    Athena/src/util/buffer.h
+    athena/src/util/buffer.cpp
+    athena/src/util/buffer.h
 
-    Athena/src/athena.h
-    Athena/src/core.h
+    athena/src/athena.h
+    athena/src/core.h
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC lz4::lz4)
-target_include_directories(${PROJECT_NAME} PUBLIC Athena/src)
+target_include_directories(${PROJECT_NAME} PUBLIC athena/src)
 
 if(ATHENA_BUILD_EXAMPLE)
     find_package(raylib CONFIG REQUIRED)
 
-    add_executable(AthenaSandbox
+    add_executable(athena-sandbox
         sandbox/src/sandbox.cpp
     )
 
-    target_link_libraries(AthenaSandbox PUBLIC Athena raylib)
-    target_include_directories(AthenaSandbox PUBLIC Athena/src)
-    set_property(TARGET AthenaSandbox PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/sandbox")
+    target_link_libraries(athena-sandbox PUBLIC athena raylib)
+    target_include_directories(athena-sandbox PUBLIC athena/src)
+    set_property(TARGET athena-sandbox PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/sandbox")
 endif()
