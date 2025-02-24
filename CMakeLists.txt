@@ -6,6 +6,8 @@ project(Athena)
 
 option(ATHENA_BUILD_EXAMPLE "Build the example" OFF)
 
+find_package(lz4 REQUIRED)
+
 # TODO: Add lib for reader, writer. Use upstream lz4 if possible.
 
 if (WIN32)
@@ -24,15 +26,6 @@ add_library(${PROJECT_NAME} ${BUILD_TYPE}
     Athena/src/streams/compression/compressedBuffer.cpp
     Athena/src/streams/compression/compressedBuffer.h
 
-    Athena/src/streams/compression/thirdparty/lz4.c
-    Athena/src/streams/compression/thirdparty/lz4.h
-    Athena/src/streams/compression/thirdparty/lz4frame.c
-    Athena/src/streams/compression/thirdparty/lz4frame.h
-    Athena/src/streams/compression/thirdparty/lz4hc.c 
-    Athena/src/streams/compression/thirdparty/lz4hc.h
-    Athena/src/streams/compression/thirdparty/xxhash.c
-    Athena/src/streams/compression/thirdparty/xxhash.h
-
     Athena/src/streams/readers/fileStreamReader.h
     Athena/src/streams/readers/fileStreamReader.cpp
     Athena/src/streams/readers/streamReader.h
@@ -48,18 +41,11 @@ add_library(${PROJECT_NAME} ${BUILD_TYPE}
     Athena/src/core.h
 )
 
+target_link_libraries(${PROJECT_NAME} PUBLIC lz4::lz4)
 target_include_directories(${PROJECT_NAME} PUBLIC Athena/src)
 
 if(ATHENA_BUILD_EXAMPLE)
-    include(FetchContent)
-    FetchContent_Declare(
-            raylib
-            GIT_REPOSITORY "https://github.com/Doomhowl-Interactive/raylib.git"
-            GIT_TAG "bf65eda271adc65709b4c210c9020cef53e63a05"
-            GIT_PROGRESS TRUE
-            GIT_SHALLOW TRUE
-    )
-    FetchContent_MakeAvailable(raylib)
+    find_package(raylib CONFIG REQUIRED)
 
     add_executable(AthenaSandbox
         sandbox/src/sandbox.cpp
