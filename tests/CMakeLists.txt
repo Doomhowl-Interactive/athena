@@ -8,7 +8,7 @@ enable_testing()
 find_package(GTest CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME}
-    tests.cpp
+    tests.cc
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

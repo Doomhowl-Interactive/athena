@@ -1,6 +1,5 @@
-#include "fileStreamReader.h"
-#include <exceptions/badStreamException.h>
-#include <exceptions/indexBoundsException.h>
+#include "minerva/file_stream_reader.hh"
+#include "minerva/exceptions.hh"
 
 namespace minerva
 {
@@ -10,12 +9,11 @@ fileStreamReader::fileStreamReader(std::filesystem::path &path) : m_path(path)
     m_stream = std::ifstream(path, std::ifstream::in | std::ifstream::binary);
 
     if (!m_stream.good())
-        throw exceptions::badStreamException("reader stream was bad!");
+        throw badStreamException("reader stream was bad!");
     if (!m_stream.is_open())
-        throw exceptions::badStreamException("reader stream was not open!");
+        throw badStreamException("reader stream was not open!");
     if (!std::filesystem::file_size(path))
-        throw exceptions::badStreamException(
-            "m_stream filesize was 0! (check if file is open somewhere else in program!)");
+        throw badStreamException("m_stream filesize was 0! (check if file is open somewhere else in program!)");
     size_t size = std::filesystem::file_size(path);
 
     char *data = (char *)malloc(size);
@@ -45,7 +43,7 @@ void fileStreamReader::setSectionPointerPosition(size_t index)
 void fileStreamReader::setStreamPosition(size_t index)
 {
     if (index < 0 || index > m_sections.size())
-        throw exceptions::indexOutOfBoundsException("streamPosition was out of bounds");
+        throw indexOutOfBoundsException("streamPosition was out of bounds");
     m_sectionIndex = index;
 }
 void fileStreamReader::previousStreamSection()

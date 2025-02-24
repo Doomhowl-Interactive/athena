@@ -1,6 +1,8 @@
-#include "buffer.h"
+#include "minerva/buffer.hh"
+#include "minerva/exceptions.hh"
+
 #include <algorithm>
-#include <exceptions/indexBoundsException.h>
+
 namespace minerva
 {
 void buffer::writeData(const char *data, size_t size)
@@ -16,7 +18,7 @@ const char *buffer::readData(size_t size)
         m_pointerPosition = 0;
 
     if (m_pointerPosition + size > m_data.size())
-        throw exceptions::indexOutOfBoundsException("m_pointerPosition + size > m_data.size() was true!");
+        throw indexOutOfBoundsException("m_pointerPosition + size > m_data.size() was true!");
 
     const char *data = (const char *)malloc(size);
 
@@ -27,7 +29,6 @@ const char *buffer::readData(size_t size)
 void buffer::setPointerPosition(size_t index)
 {
     if (m_pointerPosition + index > m_data.size())
-        throw exceptions::indexOutOfBoundsException(
-            "index was out of bounds"); // TODO custom exception with print statement
+        throw indexOutOfBoundsException("index was out of bounds"); // TODO custom exception with print statement
 }
 } // namespace minerva

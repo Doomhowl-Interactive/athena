@@ -1,13 +1,10 @@
 #pragma once
-#ifndef FILE_STREAM_READER
-#define FILE_STREAM_READER
+#include "compressed_buffer.hh"
+#include "stream_reader.hh"
 
 #include <filesystem>
-#include <streams/readers/streamReader.h>
-
 #include <fstream>
 #include <iostream>
-#include <streams/compression/compressedBuffer.h>
 
 namespace minerva
 {
@@ -50,4 +47,3 @@ class fileStreamReader : public streamReader
 };
 
 } // namespace minerva
-#endif // !FILE_STREAM_READER

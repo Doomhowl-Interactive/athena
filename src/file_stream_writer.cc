@@ -1,9 +1,9 @@
-#include "fileStreamWriter.h"
-#include <exceptions/badStreamException.h>
-#include <exceptions/indexBoundsException.h>
+#include "minerva/file_stream_writer.hh"
+#include "minerva/compressed_buffer.hh"
+#include "minerva/exceptions.hh"
 
 #include <future>
-#include <streams/compression/compressedBuffer.h>
+
 namespace minerva
 {
 
@@ -12,9 +12,9 @@ fileStreamWriter::fileStreamWriter(std::filesystem::path &path) : m_path(path)
     m_stream = std::ofstream(path, std::ofstream::out | std::ofstream::binary);
 
     if (!m_stream.good())
-        throw exceptions::badStreamException("writer stream was bad!");
+        throw badStreamException("writer stream was bad!");
     if (!m_stream.is_open())
-        throw exceptions::badStreamException("writer stream was not open!");
+        throw badStreamException("writer stream was not open!");
 
     sections.resize(1);
 }
@@ -33,7 +33,7 @@ void fileStreamWriter::setSectionPointerPosition(size_t index)
 void fileStreamWriter::setStreamPosition(size_t index)
 {
     if (index < 0 || index > sections.size())
-        throw exceptions::indexOutOfBoundsException("streamPosition was out of bounds");
+        throw indexOutOfBoundsException("streamPosition was out of bounds");
     sectionIndex = index;
 }
 void fileStreamWriter::previousStreamSection()

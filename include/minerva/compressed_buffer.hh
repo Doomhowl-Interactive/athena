@@ -1,5 +1,6 @@
 #pragma once
-#include <util/buffer.h>
+#include "buffer.hh"
+
 namespace minerva
 {
 class compressedBuffer : protected buffer

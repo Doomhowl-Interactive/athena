@@ -1,6 +1,8 @@
+#include <minerva/file_stream_reader.hh>
+#include <minerva/file_stream_writer.hh>
 
+#include <filesystem>
 #include <iostream>
-#include <minerva.h>
 #include <raylib.h>
 #include <vector>
 
