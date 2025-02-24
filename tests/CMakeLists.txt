@@ -16,7 +16,8 @@ enable_testing()
 include(GoogleTest)
 
 add_executable(${PROJECT_NAME}
-    tests.cc
+    main_tests.cc
+    serialized_real_tests.cc
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE

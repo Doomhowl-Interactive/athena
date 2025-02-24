@@ -31,21 +31,21 @@ inline double deserializeReal(std::pair<int64_t, int32_t> data)
     return std::ldexp(static_cast<double>(data.first), data.second);
 }
 
-class SerializableReal
+class SerializedReal
 {
   public:
     int64_t mantissa;
     int32_t exponent;
 
-    SerializableReal() : mantissa(0), exponent(0)
+    SerializedReal() : mantissa(0), exponent(0)
     {
     }
 
-    SerializableReal(int64_t mantissa, int32_t exponent) : mantissa(mantissa), exponent(exponent)
+    SerializedReal(int64_t mantissa, int32_t exponent) : mantissa(mantissa), exponent(exponent)
     {
     }
 
-    SerializableReal(double x)
+    SerializedReal(double x)
     {
         auto [mantissa, exponent] = serializeReal(x);
         this->mantissa = mantissa;
@@ -58,7 +58,7 @@ class SerializableReal
     }
 
     // SPACESHIP OPERATOR!!!
-    auto operator<=>(const SerializableReal &other) const noexcept = default;
+    auto operator<=>(const SerializedReal &other) const noexcept = default;
 };
 
 } // namespace minerva

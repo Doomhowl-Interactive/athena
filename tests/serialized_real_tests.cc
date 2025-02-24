@@ -1,4 +1,4 @@
-#include <minerva/serializable_real.hh>
+#include <minerva/serialized_real.hh>
 #include <gtest/gtest.h>
 
 TEST(UtilsTests, TestSerializationPositive)
