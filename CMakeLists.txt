@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.15)
-
+project(minerva)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-project(athena)
 
-option(ATHENA_BUILD_EXAMPLE "Build the example" OFF)
+option(MINERVA_BUILD_EXAMPLE "Build the example" OFF)
 
 find_package(lz4 REQUIRED)
 
@@ -19,39 +18,39 @@ else()
 endif()
 
 add_library(${PROJECT_NAME} ${BUILD_TYPE}
-    athena/src/exceptions/badStreamException.h
-    athena/src/exceptions/compressionException.h
-    athena/src/exceptions/indexBoundsException.h
+    minerva/src/exceptions/badStreamException.h
+    minerva/src/exceptions/compressionException.h
+    minerva/src/exceptions/indexBoundsException.h
 
-    athena/src/streams/compression/compressedBuffer.cpp
-    athena/src/streams/compression/compressedBuffer.h
+    minerva/src/streams/compression/compressedBuffer.cpp
+    minerva/src/streams/compression/compressedBuffer.h
 
-    athena/src/streams/readers/fileStreamReader.h
-    athena/src/streams/readers/fileStreamReader.cpp
-    athena/src/streams/readers/streamReader.h
+    minerva/src/streams/readers/fileStreamReader.h
+    minerva/src/streams/readers/fileStreamReader.cpp
+    minerva/src/streams/readers/streamReader.h
 
-    athena/src/streams/writers/fileStreamWriter.h
-    athena/src/streams/writers/fileStreamWriter.cpp
-    athena/src/streams/writers/streamWriter.h
+    minerva/src/streams/writers/fileStreamWriter.h
+    minerva/src/streams/writers/fileStreamWriter.cpp
+    minerva/src/streams/writers/streamWriter.h
 
-    athena/src/util/buffer.cpp
-    athena/src/util/buffer.h
+    minerva/src/util/buffer.cpp
+    minerva/src/util/buffer.h
 
-    athena/src/athena.h
-    athena/src/core.h
+    minerva/src/minerva.h
+    minerva/src/core.h
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC lz4::lz4)
-target_include_directories(${PROJECT_NAME} PUBLIC athena/src)
+target_include_directories(${PROJECT_NAME} PUBLIC minerva/src)
 
-if(ATHENA_BUILD_EXAMPLE)
+if(MINERVA_BUILD_EXAMPLE)
     find_package(raylib CONFIG REQUIRED)
 
-    add_executable(athena-sandbox
+    add_executable(minerva-sandbox
         sandbox/src/sandbox.cpp
     )
 
-    target_link_libraries(athena-sandbox PUBLIC athena raylib)
-    target_include_directories(athena-sandbox PUBLIC athena/src)
-    set_property(TARGET athena-sandbox PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/sandbox")
+    target_link_libraries(minerva-sandbox PUBLIC minerva raylib)
+    target_include_directories(minerva-sandbox PUBLIC minerva/src)
+    set_property(TARGET minerva-sandbox PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/sandbox")
 endif()

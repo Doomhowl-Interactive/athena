@@ -367,7 +367,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# ignore the athena bin folder
+# ignore the minerva bin folder
 bin/
 bin-int/
 

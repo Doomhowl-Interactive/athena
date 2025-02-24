@@ -1,6 +1,6 @@
 
-#include <athena.h>
 #include <iostream>
+#include <minerva.h>
 #include <raylib.h>
 #include <vector>
 
@@ -30,7 +30,7 @@ int main()
 
     try
     {
-        auto streamWriter = athena::fileStreamWriter(path);
+        auto streamWriter = minerva::fileStreamWriter(path);
         DoomPackageHeader pkgHeader{1};
         streamWriter.writeObject(pkgHeader);
         streamWriter.nextStreamSection();
@@ -46,17 +46,18 @@ int main()
 
         streamWriter.flush();
     }
-    catch (const std::exception& ex)
+    catch (const std::exception &ex)
     {
         std::cerr << "Failed to save asset bundle: " << ex.what() << '\n';
     }
 
     Texture wolfTexture;
 
-    InitWindow(800, 600, "raylib athena asset serialization");
+    InitWindow(800, 600, "raylib minerva asset serialization");
 
-    try {
-        auto streamReader = athena::fileStreamReader(path);
+    try
+    {
+        auto streamReader = minerva::fileStreamReader(path);
 
         // TODO: Leaks memory
         auto pkgHeader = streamReader.readObject<DoomPackageHeader>();
@@ -64,19 +65,19 @@ int main()
         std::cout << "Magic: " << pkgHeader.magic << '\n';
         std::cout << "Version: " << pkgHeader.version << '\n';
         std::cout << "Asset count: " << pkgHeader.assetCount << '\n';
-        
+
         for (int i = 0; i < pkgHeader.assetCount; i++)
         {
             streamReader.nextStreamSection();
 
             auto asset = streamReader.readObject<DoomAssetHeader>();
-            auto rawData = reinterpret_cast<const unsigned char*>(streamReader.readData(asset.size));
+            auto rawData = reinterpret_cast<const unsigned char *>(streamReader.readData(asset.size));
 
-            const char* ext = GetFileExtension(asset.fileName);
+            const char *ext = GetFileExtension(asset.fileName);
             wolfTexture = LoadTextureFromImage(LoadImageFromMemory(ext, rawData, asset.size));
         }
     }
-    catch (const std::exception& ex)
+    catch (const std::exception &ex)
     {
         std::cerr << "Failed to load asset bundle: " << ex.what() << '\n';
     }

@@ -2,7 +2,7 @@
 #include <exceptions/compressionException.h>
 #define LZ4F_HEAPMODE 1
 #include <lz4frame.h>
-namespace athena
+namespace minerva
 {
 compressedBuffer::compressedBuffer(buffer buffer)
 {
@@ -65,4 +65,4 @@ buffer &compressedBuffer::decompress()
     p_buffer->writeData((const char *)dstBuffer, dstSize);
     return *p_buffer;
 }
-} // namespace athena
+} // namespace minerva
