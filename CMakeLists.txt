@@ -22,7 +22,6 @@ find_package(lz4 REQUIRED)
 add_library(${PROJECT_NAME} ${BUILD_TYPE}
     include/minerva/buffer.hh
     include/minerva/compressed_buffer.hh
-    include/minerva/core.hh
     include/minerva/exceptions.hh
     include/minerva/file_stream_reader.hh
     include/minerva/file_stream_writer.hh

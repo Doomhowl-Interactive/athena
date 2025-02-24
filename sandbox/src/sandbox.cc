@@ -32,21 +32,21 @@ int main()
 
     try
     {
-        auto IStreamWriter = minerva::FileStreamWriter(path);
+        auto writer = minerva::FileStreamWriter(path);
         DoomPackageHeader pkgHeader{1};
-        IStreamWriter.writeObject(pkgHeader);
-        IStreamWriter.nextStreamSection();
+        writer.writeObject(pkgHeader);
+        writer.nextStreamSection();
 
         {
             int fileSize;
             unsigned char *data = LoadFileData("ComfyUI_00372_.png", &fileSize);
 
             auto header = DoomAssetHeader{"ComfyUI_00372_.png", static_cast<uint64_t>(fileSize)};
-            IStreamWriter.writeObject(header);
-            IStreamWriter.writeData((const char *)data, fileSize);
+            writer.writeObject(header);
+            writer.writeData((const char *)data, fileSize);
         }
 
-        IStreamWriter.flush();
+        writer.flush();
     }
     catch (const std::exception &ex)
     {
@@ -59,10 +59,10 @@ int main()
 
     try
     {
-        auto IStreamReader = minerva::FileStreamReader(path);
+        auto reader = minerva::FileStreamReader(path);
 
         // TODO: Leaks memory
-        auto pkgHeader = IStreamReader.readObject<DoomPackageHeader>();
+        auto pkgHeader = reader.readObject<DoomPackageHeader>();
 
         std::cout << "Magic: " << pkgHeader.magic << '\n';
         std::cout << "Version: " << pkgHeader.version << '\n';
@@ -70,10 +70,10 @@ int main()
 
         for (int i = 0; i < pkgHeader.assetCount; i++)
         {
-            IStreamReader.nextStreamSection();
+            reader.nextStreamSection();
 
-            auto asset = IStreamReader.readObject<DoomAssetHeader>();
-            auto rawData = reinterpret_cast<const unsigned char *>(IStreamReader.readData(asset.size));
+            auto asset = reader.readObject<DoomAssetHeader>();
+            auto rawData = reinterpret_cast<const unsigned char *>(reader.readData(asset.size));
 
             const char *ext = GetFileExtension(asset.fileName);
             wolfTexture = LoadTextureFromImage(LoadImageFromMemory(ext, rawData, asset.size));
